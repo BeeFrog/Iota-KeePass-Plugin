@@ -8,7 +8,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-//TODO: Make Folder a DropDown combo.
 namespace IOTAAddressCreation
 {
     public partial class IotaSettings : Form
@@ -21,6 +20,17 @@ namespace IOTAAddressCreation
 
         public int MyProperty { get; set; }
         public IotaSetting IotaSetting { get; private set; }
+        public string[] Groups { get; internal set; }
+
+        protected override void OnShown(EventArgs e)
+        {
+            base.OnShown(e);
+
+            if (this.Groups?.Any() == true)
+            {
+                this.comboBoxGroups.Items.AddRange(this.Groups);
+            }
+        }
 
         private void Create_Click(object sender, EventArgs e)
         {
@@ -29,12 +39,8 @@ namespace IOTAAddressCreation
                 EntryTitle = this.textBoxEntryName.Text,
                 NoOfAddress = (int)this.numberOfAddresses.Value,
                 SecurityLevel = securityLevel.SelectedIndex + 1,
-                FolderName = this.textBoxFolderName.Text
+                FolderName = this.comboBoxGroups.Text
             };
-
-            //TODO: do this properly!
-            this.DialogResult = DialogResult.OK;
-            this.Close();
         }
     }
 }

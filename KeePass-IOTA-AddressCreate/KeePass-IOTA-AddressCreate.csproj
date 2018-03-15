@@ -106,6 +106,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CreationProgress.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CreationProgress.Designer.cs">
+      <DependentUpon>CreationProgress.cs</DependentUpon>
+    </Compile>
     <Compile Include="IOTAAddressCreationExt.cs" />
     <Compile Include="IotaSetting.cs" />
     <Compile Include="IotaSettings.cs">
@@ -126,6 +132,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="CreationProgress.resx">
+      <DependentUpon>CreationProgress.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="IotaSettings.resx">
       <DependentUpon>IotaSettings.cs</DependentUpon>
     </EmbeddedResource>

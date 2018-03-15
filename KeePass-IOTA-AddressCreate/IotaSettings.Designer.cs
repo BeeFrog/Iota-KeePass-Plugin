@@ -36,14 +36,15 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.textBoxEntryName = new System.Windows.Forms.TextBox();
-            this.textBoxFolderName = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
+            this.comboBoxGroups = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.numberOfAddresses)).BeginInit();
             this.SuspendLayout();
             // 
             // buttonCreate
             // 
-            this.buttonCreate.Location = new System.Drawing.Point(236, 184);
+            this.buttonCreate.DialogResult = System.Windows.Forms.DialogResult.OK;
+            this.buttonCreate.Location = new System.Drawing.Point(279, 187);
             this.buttonCreate.Name = "buttonCreate";
             this.buttonCreate.Size = new System.Drawing.Size(75, 23);
             this.buttonCreate.TabIndex = 0;
@@ -112,17 +113,9 @@
             // 
             this.textBoxEntryName.Location = new System.Drawing.Point(191, 32);
             this.textBoxEntryName.Name = "textBoxEntryName";
-            this.textBoxEntryName.Size = new System.Drawing.Size(120, 20);
+            this.textBoxEntryName.Size = new System.Drawing.Size(163, 20);
             this.textBoxEntryName.TabIndex = 7;
             this.textBoxEntryName.Text = "Iota Seed";
-            // 
-            // textBoxFolderName
-            // 
-            this.textBoxFolderName.Location = new System.Drawing.Point(191, 62);
-            this.textBoxFolderName.Name = "textBoxFolderName";
-            this.textBoxFolderName.Size = new System.Drawing.Size(120, 20);
-            this.textBoxFolderName.TabIndex = 9;
-            this.textBoxFolderName.Text = "Iota Seeds";
             // 
             // label4
             // 
@@ -133,13 +126,22 @@
             this.label4.TabIndex = 8;
             this.label4.Text = "Folder:";
             // 
+            // comboBoxGroups
+            // 
+            this.comboBoxGroups.FormattingEnabled = true;
+            this.comboBoxGroups.Location = new System.Drawing.Point(191, 62);
+            this.comboBoxGroups.Name = "comboBoxGroups";
+            this.comboBoxGroups.Size = new System.Drawing.Size(163, 21);
+            this.comboBoxGroups.TabIndex = 10;
+            this.comboBoxGroups.Text = "Iota Seeds";
+            // 
             // IotaSettings
             // 
             this.AcceptButton = this.buttonCreate;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(347, 222);
-            this.Controls.Add(this.textBoxFolderName);
+            this.ClientSize = new System.Drawing.Size(388, 222);
+            this.Controls.Add(this.comboBoxGroups);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.textBoxEntryName);
             this.Controls.Add(this.label3);
@@ -170,7 +172,7 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox textBoxEntryName;
-        private System.Windows.Forms.TextBox textBoxFolderName;
         private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.ComboBox comboBoxGroups;
     }
 }

@@ -34,16 +34,31 @@ namespace IOTAAddressCreation
             return true;
         }
 
+        private event EventHandler ProgressChanged;
+
         private void IotaWork(object sender, EventArgs e)
         {
             if (this.m_host.Database.IsOpen)
             {
                 using (var dialog = new IotaSettings())
                 {
+                    dialog.Groups = this.GetFolders();
                     if (dialog.ShowDialog() == DialogResult.OK)
                     {
-                        var response = CreateAddress(dialog.IotaSetting);
-                        MessageBox.Show(response);
+                        using (CreationProgress progressform = new CreationProgress())
+                        {                            
+                            progressform.SetUpProgressBar(dialog.IotaSetting.NoOfAddress);
+                            this.ProgressChanged += progressform.OnProgressIncremented;
+                            progressform.Show();
+                            Application.DoEvents();
+
+                            var response = CreateAddress(dialog.IotaSetting);
+
+                            this.ProgressChanged -= progressform.OnProgressIncremented;
+                            progressform.Close();
+
+                            MessageBox.Show(response);
+                        }                        
                     }
                 }
             }
@@ -57,7 +72,7 @@ namespace IOTAAddressCreation
         {
             var group = this.m_host.Database.RootGroup.FindCreateGroup(settings.FolderName, true);
 
-            var entry = new KeePassLib.PwEntry(true, true);                        
+            var entry = new KeePassLib.PwEntry(true, true);
             entry.Strings.Set(PwDefs.TitleField, new KeePassLib.Security.ProtectedString(false, settings.EntryTitle));
             KeePassLib.Security.ProtectedString protectedStringSeed = CreateSeed();
             entry.Strings.Set(PwDefs.PasswordField, protectedStringSeed);
@@ -66,13 +81,25 @@ namespace IOTAAddressCreation
             if (protectedStringSeed.IsEmpty) return "Seed value is empty!";
             var seed = protectedStringSeed.ReadString();
 
+
+
             for (int i = 0; i < settings.NoOfAddress; i++)
             {
                 var address = this.CreateAddress(protectedStringSeed.ReadString(), i, settings.SecurityLevel);
-                entry.Strings.Set("Address " + i.ToString().PadLeft(3,'0'), new KeePassLib.Security.ProtectedString(false, address));
+                
+
+                if (this.ProgressChanged != null)
+                {
+                    this.ProgressChanged(this, new EventArgs());
+                    entry.Strings.Set("Address " + i.ToString().PadLeft(3, '0'), new KeePassLib.Security.ProtectedString(false, address));
+                }
             }
 
             this.m_host.Database.Modified = true;
+
+            // Force the groups to refresh
+            this.m_host.Database.RootGroup.Touch(true, true);
+
             return "Addresses created";
         }
 
@@ -100,6 +127,17 @@ namespace IOTAAddressCreation
         private string CreateAddress(string seed, int index, int securityLevel)
         {
             return BeeFrog.Iota.Api.Utils.IotaUtils.GenerateAddress(seed, index, securityLevel).Address;
+        }
+
+        private string[] GetFolders()
+        {
+            var groups = new List<string>();
+            var group = this.m_host.Database.RootGroup;
+            groups.Add(group.Name);
+
+            groups.AddRange(group.GetGroups(true).Select(g => g.Name));
+
+            return groups.ToArray();
         }
     }
 }
