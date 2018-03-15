@@ -13,25 +13,33 @@ namespace IOTAAddressCreation
     public sealed class IOTAAddressCreationExt : Plugin
     {
         private IPluginHost m_host = null;
+        private ToolStripItemCollection tsMenu;
+        private ToolStripMenuItem menuItem;
 
         public override bool Initialize(IPluginHost host)
         {
             m_host = host;
 
             // Get a reference to the 'Tools' menu item container
-            ToolStripItemCollection tsMenu = m_host.MainWindow.ToolsMenu.DropDownItems;
+            tsMenu = m_host.MainWindow.ToolsMenu.DropDownItems;
             
             // Add a separator at the bottom
             var separator = new ToolStripSeparator();
             tsMenu.Add(separator);
             
-            var menuItem = new ToolStripMenuItem();
+            menuItem = new ToolStripMenuItem();
             menuItem.Text = "Iota offline address creation";
             menuItem.Click += this.IotaWork;
             menuItem.Image = Properties.Resources.iota_favicon.ToBitmap();
             tsMenu.Add(menuItem);
 
             return true;
+        }
+
+        public override void Terminate()
+        {
+            base.Terminate();
+            this.tsMenu.Remove(menuItem);
         }
 
         private event EventHandler ProgressChanged;
@@ -87,7 +95,6 @@ namespace IOTAAddressCreation
             {
                 var address = this.CreateAddress(protectedStringSeed.ReadString(), i, settings.SecurityLevel);
                 
-
                 if (this.ProgressChanged != null)
                 {
                     this.ProgressChanged(this, new EventArgs());
@@ -96,9 +103,8 @@ namespace IOTAAddressCreation
             }
 
             this.m_host.Database.Modified = true;
-
             // Force the groups to refresh
-            this.m_host.Database.RootGroup.Touch(true, true);
+            m_host.MainWindow.UpdateUI(false, null, true, m_host.Database.RootGroup, true, null, true);
 
             return "Addresses created";
         }
