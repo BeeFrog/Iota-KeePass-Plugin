@@ -13,5 +13,13 @@ namespace IOTAAddressCreation
 
         public string EntryTitle { get; set; }
         public string FolderName { get; set; }
+
+        public Storagelocation Storagelocation { get; set; }
+    }
+
+    public enum Storagelocation
+    {
+        Strings,
+        Notes
     }
 }

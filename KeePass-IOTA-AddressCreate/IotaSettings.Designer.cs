@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(IotaSettings));
             this.buttonCreate = new System.Windows.Forms.Button();
             this.securityLevel = new System.Windows.Forms.ComboBox();
@@ -38,13 +39,18 @@
             this.textBoxEntryName = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.comboBoxGroups = new System.Windows.Forms.ComboBox();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.comboBoxStorage = new System.Windows.Forms.ComboBox();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.numberOfAddresses)).BeginInit();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // buttonCreate
             // 
             this.buttonCreate.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.buttonCreate.Location = new System.Drawing.Point(279, 187);
+            this.buttonCreate.Location = new System.Drawing.Point(279, 323);
             this.buttonCreate.Name = "buttonCreate";
             this.buttonCreate.Size = new System.Drawing.Size(75, 23);
             this.buttonCreate.TabIndex = 0;
@@ -60,14 +66,14 @@
             "Low",
             "Medium",
             "High"});
-            this.securityLevel.Location = new System.Drawing.Point(191, 97);
+            this.securityLevel.Location = new System.Drawing.Point(191, 99);
             this.securityLevel.Name = "securityLevel";
             this.securityLevel.Size = new System.Drawing.Size(120, 21);
             this.securityLevel.TabIndex = 2;
             // 
             // numberOfAddresses
             // 
-            this.numberOfAddresses.Location = new System.Drawing.Point(191, 134);
+            this.numberOfAddresses.Location = new System.Drawing.Point(191, 133);
             this.numberOfAddresses.Maximum = new decimal(new int[] {
             10000,
             0,
@@ -85,7 +91,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(30, 100);
+            this.label1.Location = new System.Drawing.Point(30, 103);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(77, 13);
             this.label1.TabIndex = 4;
@@ -94,7 +100,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(30, 136);
+            this.label2.Location = new System.Drawing.Point(30, 137);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(155, 13);
             this.label2.TabIndex = 5;
@@ -103,7 +109,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(30, 35);
+            this.label3.Location = new System.Drawing.Point(30, 36);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(65, 13);
             this.label3.TabIndex = 6;
@@ -120,7 +126,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(30, 65);
+            this.label4.Location = new System.Drawing.Point(30, 69);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(39, 13);
             this.label4.TabIndex = 8;
@@ -129,18 +135,51 @@
             // comboBoxGroups
             // 
             this.comboBoxGroups.FormattingEnabled = true;
-            this.comboBoxGroups.Location = new System.Drawing.Point(191, 62);
+            this.comboBoxGroups.Location = new System.Drawing.Point(191, 65);
             this.comboBoxGroups.Name = "comboBoxGroups";
             this.comboBoxGroups.Size = new System.Drawing.Size(163, 21);
             this.comboBoxGroups.TabIndex = 10;
             this.comboBoxGroups.Text = "Iota Seeds";
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.label5);
+            this.groupBox1.Controls.Add(this.comboBoxStorage);
+            this.groupBox1.Location = new System.Drawing.Point(33, 197);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(321, 95);
+            this.groupBox1.TabIndex = 11;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Advanced Settings";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(21, 31);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(92, 13);
+            this.label5.TabIndex = 15;
+            this.label5.Text = "Save Address To:";
+            // 
+            // comboBoxStorage
+            // 
+            this.comboBoxStorage.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxStorage.FormattingEnabled = true;
+            this.comboBoxStorage.Items.AddRange(new object[] {
+            "Strings",
+            "Notes"});
+            this.comboBoxStorage.Location = new System.Drawing.Point(182, 27);
+            this.comboBoxStorage.Name = "comboBoxStorage";
+            this.comboBoxStorage.Size = new System.Drawing.Size(120, 21);
+            this.comboBoxStorage.TabIndex = 14;
             // 
             // IotaSettings
             // 
             this.AcceptButton = this.buttonCreate;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(388, 222);
+            this.ClientSize = new System.Drawing.Size(388, 358);
+            this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.comboBoxGroups);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.textBoxEntryName);
@@ -158,6 +197,8 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Iota Offline Seed Creation";
             ((System.ComponentModel.ISupportInitialize)(this.numberOfAddresses)).EndInit();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -174,5 +215,9 @@
         private System.Windows.Forms.TextBox textBoxEntryName;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.ComboBox comboBoxGroups;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.ComboBox comboBoxStorage;
+        private System.Windows.Forms.ToolTip toolTip1;
     }
 }

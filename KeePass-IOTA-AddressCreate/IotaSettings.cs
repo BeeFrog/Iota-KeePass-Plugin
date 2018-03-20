@@ -16,9 +16,9 @@ namespace IOTAAddressCreation
         {
             InitializeComponent();
             this.securityLevel.SelectedIndex = 1;
+            this.comboBoxStorage.SelectedIndex = 0;
         }
 
-        public int MyProperty { get; set; }
         public IotaSetting IotaSetting { get; private set; }
         public string[] Groups { get; internal set; }
 
@@ -39,7 +39,8 @@ namespace IOTAAddressCreation
                 EntryTitle = this.textBoxEntryName.Text,
                 NoOfAddress = (int)this.numberOfAddresses.Value,
                 SecurityLevel = securityLevel.SelectedIndex + 1,
-                FolderName = this.comboBoxGroups.Text
+                FolderName = this.comboBoxGroups.Text,
+                Storagelocation = (Storagelocation)this.comboBoxStorage.SelectedIndex,
             };
         }
     }

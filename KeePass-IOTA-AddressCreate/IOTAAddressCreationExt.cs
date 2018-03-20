@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing.Imaging;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,6 +17,7 @@ namespace IOTAAddressCreation
         private IPluginHost m_host = null;
         private ToolStripItemCollection tsMenu;
         private ToolStripMenuItem menuItem;
+        private byte[] iconUuId = Guid.Parse("C29F5DC9-60C5-4956-AC73-B2281BBC52A7").ToByteArray();
 
         public override bool Initialize(IPluginHost host)
         {
@@ -88,19 +91,42 @@ namespace IOTAAddressCreation
 
             if (protectedStringSeed.IsEmpty) return "Seed value is empty!";
             var seed = protectedStringSeed.ReadString();
-
-
-
+            
+            var addresses = new List<string>();
+            
             for (int i = 0; i < settings.NoOfAddress; i++)
             {
                 var address = this.CreateAddress(protectedStringSeed.ReadString(), i, settings.SecurityLevel);
-                
+                addresses.Add(address);
+
                 if (this.ProgressChanged != null)
                 {
-                    this.ProgressChanged(this, new EventArgs());
-                    entry.Strings.Set("Address " + i.ToString().PadLeft(3, '0'), new KeePassLib.Security.ProtectedString(false, address));
+                    this.ProgressChanged(this, new EventArgs());                    
                 }
             }
+
+            if(settings.Storagelocation == Storagelocation.Notes)
+            {
+                var notesString = String.Join("\n", addresses.Select((address, i) => $"Address {i.ToString().PadLeft(3, '0')} {address}"));
+                var protectedString = new KeePassLib.Security.ProtectedString(false, notesString);
+                entry.Strings.Set(PwDefs.NotesField, protectedString);
+            }
+            else
+            {
+                for(int i = 0; i < addresses.Count; i++)
+                {
+                    var addressName = "Address " + i.ToString().PadLeft(3, '0');
+                    var protectedString = new KeePassLib.Security.ProtectedString(false, addresses[i]);
+                    entry.Strings.Set(addressName, protectedString);
+                }
+            }
+
+            try
+            {
+                CheckAndAddIotaIcon();
+                entry.CustomIconUuid = new PwUuid(this.iconUuId);
+            }
+            catch { }
 
             this.m_host.Database.Modified = true;
             // Force the groups to refresh
@@ -128,6 +154,29 @@ namespace IOTAAddressCreation
             var profile = new KeePassLib.Cryptography.PasswordGenerator.PwProfile() { CharSet = charSet };
             profile.Length = 81;
             return profile;
+        }
+
+        private void CheckAndAddIotaIcon()
+        {
+
+            if (!this.m_host.Database.CustomIcons.Any(i => i.Uuid.UuidBytes == this.iconUuId))
+            {
+                var icon = new PwCustomIcon(new PwUuid(this.iconUuId), GetIotaIconAsPng());
+                this.m_host.Database.CustomIcons.Add(icon);
+            }
+        }
+
+        private byte[] GetIotaIconAsPng()
+        {
+            var iconBitmap = Properties.Resources.iota_favicon.ToBitmap();
+            byte[] iconPng = null;
+            using (MemoryStream stream = new MemoryStream())
+            {
+                iconBitmap.Save(stream, ImageFormat.Png);
+                iconPng = stream.ToArray();
+            }
+
+            return iconPng;
         }
 
         private string CreateAddress(string seed, int index, int securityLevel)
